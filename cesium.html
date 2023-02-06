@@ -33,26 +33,203 @@
       const viewer = new Cesium.Viewer("cesiumContainer", {
         terrainProvider: Cesium.createWorldTerrain(),
         shadows: true,
+        infoBox: true,
       });
-      viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(
-          127.3949102176,
-          36.4194472355,
-          61.9415222354 + 40
-        ),
-        label: {
-          text: "현재온도 18˚ \n 일사량 180Mw \n ",
-          fillColor: Cesium.Color.YELLOW,
+
+      // 박스 만들기
+      function addBox(x, y, h, latitude, longitude, z, color) {
+        const scene = viewer.scene;
+        let cc, ap;
+        scene.globe.depthTestAgainstTerrain = true;
+
+        switch (color) {
+          case "BLUE":
+            cc = Cesium.Color.BLACK;
+            ap = 0.5;
+            break;
+          case "RED":
+            cc = Cesium.Color.BLACK;
+            ap = 0.7;
+            break;
+        }
+
+        //Add Primitives
+        scene.primitives.add(
+          new Cesium.Primitive({
+            geometryInstances: new Cesium.GeometryInstance({
+              geometry: Cesium.BoxGeometry.fromDimensions({
+                vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
+                dimensions: new Cesium.Cartesian3(x, y, h),
+              }),
+              modelMatrix: Cesium.Matrix4.multiplyByTranslation(
+                Cesium.Transforms.eastNorthUpToFixedFrame(
+                  Cesium.Cartesian3.fromDegrees(latitude, longitude)
+                ),
+                new Cesium.Cartesian3(0.0, 0.0, z),
+                new Cesium.Matrix4()
+              ),
+              attributes: {
+                color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+                  cc.withAlpha(ap)
+                ),
+              },
+            }),
+            appearance: new Cesium.PerInstanceColorAppearance({
+              closed: true,
+            }),
+          })
+        );
+      }
+      // 박스 데이터 정보
+      const makebox = [
+        {
+          x: 150,
+          y: 150,
+          h: 300,
+          latitude: 127.39491,
+          longitude: 36.41944,
+          z: 800,
+          color: "BLUE",
         },
+        {
+          x: 150,
+          y: 150,
+          h: 300,
+          latitude: 127.39491,
+          longitude: 36.41944,
+          z: 500,
+          color: "RED",
+        },
+      ];
+      // makebox 정보를 addBox 함수로 던지기
+      makebox.map((item) =>
+        addBox(
+          item.x,
+          item.y,
+          item.h,
+          item.latitude,
+          item.longitude,
+          item.z,
+          item.color
+        )
+      );
+
+      const entities = viewer.entities;
+      let height;
+      let positions;
+      const stripeMaterial = new Cesium.StripeMaterialProperty({
+        evenColor: Cesium.Color.WHITE.withAlpha(0.5),
+        oddColor: Cesium.Color.BLUE.withAlpha(0.5),
+        repeat: 5.0,
       });
+
+      for (i = 0; i < 5; i++) {
+        height = 61.9415222354 + 50 + 40 * i;
+        entities.add({
+          position: Cesium.Cartesian3.fromDegrees(127.39491, 36.41944),
+          ellipse: {
+            semiMinorAxis: 30.0,
+            semiMajorAxis: 30.0,
+            height: height,
+            material: Cesium.Color.fromRandom({ alpha: 1 }),
+          },
+        });
+      }
+
+      function kkk(latitude, longitude, height, text) {
+        viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(latitude, longitude, height),
+          label: {
+            font: "18px Helvetica",
+            text: text,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 2,
+            fillColor: Cesium.Color.RED,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          },
+        });
+      }
+
+      // map으로 함수에 접근하기.
+      const arr = [
+        {
+          latitude: 127.3949102176,
+          longitude: 36.4194472355,
+          height: 61.9415222354 + 60,
+          text: "높이 60m | 현재온도 16˚ | 풍속 20.7 m/s",
+        },
+        {
+          latitude: 127.3949102176,
+          longitude: 36.4194472355,
+          height: 61.9415222354 + 100,
+          text: "높이 100m | 현재온도 18˚ | 풍속 18.1 m/s",
+        },
+        {
+          latitude: 127.3949102176,
+          longitude: 36.4194472355,
+          height: 61.9415222354 + 140,
+          text: "높이 140m | 현재온도 20˚ | 풍속 16.8 m/s",
+        },
+        {
+          latitude: 127.3949102176,
+          longitude: 36.4194472355,
+          height: 61.9415222354 + 180,
+          text: "높이 160m | 현재온도 16˚ | 풍속 12.5 m/s",
+        },
+        {
+          latitude: 127.3949102176,
+          longitude: 36.4194472355,
+          height: 61.9415222354 + 220,
+          text: "높이 220m | 현재온도 15.5˚ | 풍속 12.7 m/s",
+        },
+        {
+          latitude: 127.396392,
+          longitude: 36.418592,
+          height: 61.9415222354 + 40,
+          text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+        },
+        {
+          latitude: 127.392942,
+          longitude: 36.41992,
+          height: 61.9415222354 + 40,
+          text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+        },
+        {
+          latitude: 127.398025,
+          longitude: 36.421666,
+          height: 61.9415222354 + 40,
+          text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+        },
+        {
+          latitude: 127.395738,
+          longitude: 36.422693,
+          height: 61.9415222354 + 40,
+          text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+        },
+        {
+          latitude: 127.402665,
+          longitude: 36.424814,
+          height: 61.9415222354 + 10,
+          text: "컨트롤에프 주식회사",
+        },
+      ];
+      arr.map((item) =>
+        kkk(item.latitude, item.longitude, item.height, item.text)
+      );
+
       // Add Cesium OSM Buildings.
       const buildingsTileset = viewer.scene.primitives.add(
         Cesium.createOsmBuildings()
       );
+
       // Fly the camera to Denver, Colorado at the given longitude, latitude, and height.
-      //viewer.camera.flyTo({
-      //  destination: Cesium.Cartesian3.fromDegrees(36.424627, 127.402267),
-      //});
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(
+          127.3949102176,
+          36.4194472355,
+          1100
+        ),
+      });
 
       // STEP 3 CODE
       async function addBuildingGeoJSON() {
@@ -136,7 +313,7 @@
       );
 
       // Move the camera to the new building.
-      viewer.flyTo(newBuildingTileset);
+      // viewer.flyTo(newApartment);
 
       // STEP 7 CODE
       // 버튼 클릭으로 새로운 건축물 show or none
@@ -145,6 +322,128 @@
         newBanzGLS580.show = !newBanzGLS580.show;
         newAventador.show = !newAventador.show;
       };
+
+      const imageryLayers = viewer.imageryLayers;
+
+      const viewModel = {
+        layers: [],
+        baseLayers: [],
+        upLayer: null,
+        downLayer: null,
+        selectedLayer: null,
+        isSelectableLayer: function (layer) {
+          return this.baseLayers.indexOf(layer) >= 0;
+        },
+        raise: function (layer, index) {
+          imageryLayers.raise(layer);
+          viewModel.upLayer = layer;
+          viewModel.downLayer = viewModel.layers[Math.max(0, index - 1)];
+          updateLayerList();
+          window.setTimeout(function () {
+            viewModel.upLayer = viewModel.downLayer = null;
+          }, 10);
+        },
+        lower: function (layer, index) {
+          imageryLayers.lower(layer);
+          viewModel.upLayer =
+            viewModel.layers[Math.min(viewModel.layers.length - 1, index + 1)];
+          viewModel.downLayer = layer;
+          updateLayerList();
+          window.setTimeout(function () {
+            viewModel.upLayer = viewModel.downLayer = null;
+          }, 10);
+        },
+        canRaise: function (layerIndex) {
+          return layerIndex > 0;
+        },
+        canLower: function (layerIndex) {
+          return layerIndex >= 0 && layerIndex < imageryLayers.length - 1;
+        },
+      };
+      const baseLayers = viewModel.baseLayers;
+
+      Cesium.knockout.track(viewModel);
+
+      function setupLayers() {
+        // Create all the base layers that this example will support.
+        // These base layers aren't really special.  It's possible to have multiple of them
+        // enabled at once, just like the other layers, but it doesn't make much sense because
+        // all of these layers cover the entire globe and are opaque.
+        addBaseLayerOption("Bing Maps Aerial", undefined); // the current base layer
+
+        addAdditionalLayerOption(
+          "Grid",
+          new Cesium.GridImageryProvider(),
+          0.4,
+          true
+        );
+        addAdditionalLayerOption(
+          "Tile Coordinates",
+          new Cesium.TileCoordinatesImageryProvider(),
+          1.0,
+          false
+        );
+      }
+
+      function addBaseLayerOption(name, imageryProvider) {
+        let layer;
+        if (typeof imageryProvider === "undefined") {
+          layer = imageryLayers.get(0);
+          viewModel.selectedLayer = layer;
+        } else {
+          layer = new Cesium.ImageryLayer(imageryProvider);
+        }
+
+        layer.name = name;
+        baseLayers.push(layer);
+      }
+
+      function addAdditionalLayerOption(name, imageryProvider, alpha, show) {
+        const layer = imageryLayers.addImageryProvider(imageryProvider);
+        layer.alpha = Cesium.defaultValue(alpha, 0.5);
+        layer.show = Cesium.defaultValue(show, true);
+        layer.name = name;
+        Cesium.knockout.track(layer, ["alpha", "show", "name"]);
+      }
+
+      function updateLayerList() {
+        const numLayers = imageryLayers.length;
+        viewModel.layers.splice(0, viewModel.layers.length);
+        for (let i = numLayers - 1; i >= 0; --i) {
+          viewModel.layers.push(imageryLayers.get(i));
+        }
+      }
+
+      setupLayers();
+      updateLayerList();
+
+      //Bind the viewModel to the DOM elements of the UI that call for it.
+      const toolbar = document.getElementById("toolbar");
+      Cesium.knockout.applyBindings(viewModel, toolbar);
+
+      Cesium.knockout
+        .getObservable(viewModel, "selectedLayer")
+        .subscribe(function (baseLayer) {
+          // Handle changes to the drop-down base layer selector.
+          let activeLayerIndex = 0;
+          const numLayers = viewModel.layers.length;
+          for (let i = 0; i < numLayers; ++i) {
+            if (viewModel.isSelectableLayer(viewModel.layers[i])) {
+              activeLayerIndex = i;
+              break;
+            }
+          }
+          const activeLayer = viewModel.layers[activeLayerIndex];
+          const show = activeLayer.show;
+          const alpha = activeLayer.alpha;
+          imageryLayers.remove(activeLayer, false);
+          imageryLayers.add(baseLayer, numLayers - activeLayerIndex - 1);
+          baseLayer.show = show;
+          baseLayer.alpha = alpha;
+          updateLayerList();
+        });
+
+      //////// 도형 올리기 ////////
     </script>
   </body>
 </html>
