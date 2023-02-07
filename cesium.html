@@ -23,12 +23,10 @@
     <div id="label"></div>
 
     <script>
-      // Get your token from https://cesium.com/ion/tokens
+      // API KEY(Token) 입력
       Cesium.Ion.defaultAccessToken =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNTdkNTc5YS1lODU4LTQxODMtYmIyNi0yYjhiMDM0M2NlNzAiLCJpZCI6MTIxMjYxLCJpYXQiOjE2NzM1OTExMjN9.nqcLnv-QlPS6gBGfpvyQuOh3Ftj8O1FHwjZTT-jB30M";
 
-      // Keep your Cesium.Ion.defaultAccessToken = 'your_token_here' line from above.
-      // STEP 2 CODE
       // Initialize the viewer with Cesium World Terrain.
       const viewer = new Cesium.Viewer("cesiumContainer", {
         terrainProvider: Cesium.createWorldTerrain(),
@@ -36,24 +34,57 @@
         infoBox: true,
       });
 
-      // 박스 만들기
+      // 세슘에서 제공하는 기본적인 3d 건물 추가
+      const buildingsTileset = viewer.scene.primitives.add(
+        Cesium.createOsmBuildings()
+      );
+
+      // 박스 만들기 함수
       function addBox(x, y, h, latitude, longitude, z, color) {
         const scene = viewer.scene;
         let cc, ap;
         scene.globe.depthTestAgainstTerrain = true;
-
+        // 컬러 설정
         switch (color) {
+          case "SKYBLUE":
+            cc = Cesium.Color.SKYBLUE;
+            ap = 0.5;
+            break;
           case "BLUE":
-            cc = Cesium.Color.BLACK;
+            cc = Cesium.Color.BLUE;
             ap = 0.5;
             break;
           case "RED":
+            cc = Cesium.Color.RED;
+            ap = 0.4;
+            break;
+          case "YELLOW":
+            cc = Cesium.Color.YELLOW;
+            ap = 0.5;
+            break;
+          case "GRAY":
+            cc = Cesium.Color.GRAY;
+            ap = 0.7;
+            break;
+          case "GREEN":
+            cc = Cesium.Color.GREEN;
+            ap = 0.7;
+            break;
+          case "PINK":
+            cc = Cesium.Color.PINK;
+            ap = 0.7;
+            break;
+          case "ORANGE":
+            cc = Cesium.Color.ORANGE;
+            ap = 0.7;
+            break;
+          case "BLACK":
             cc = Cesium.Color.BLACK;
             ap = 0.7;
             break;
         }
 
-        //Add Primitives
+        // 도형의 가로(x), 세로(y), 높이(h), ~ 높이부터 시작할지(z), cc(컬러), ap(투명도)
         scene.primitives.add(
           new Cesium.Primitive({
             geometryInstances: new Cesium.GeometryInstance({
@@ -83,20 +114,110 @@
       // 박스 데이터 정보
       const makebox = [
         {
-          x: 150,
-          y: 150,
+          x: 100,
+          y: 100,
           h: 300,
           latitude: 127.39491,
           longitude: 36.41944,
-          z: 800,
-          color: "BLUE",
+          z: 200,
+          color: "SKYBLUE",
         },
         {
-          x: 150,
-          y: 150,
+          x: 100,
+          y: 100,
           h: 300,
           latitude: 127.39491,
           longitude: 36.41944,
+          z: 500,
+          color: "RED",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39381,
+          longitude: 36.41944,
+          z: 200,
+          color: "SKYBLUE",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39381,
+          longitude: 36.41944,
+          z: 500,
+          color: "RED",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39271,
+          longitude: 36.41944,
+          z: 200,
+          color: "SKYBLUE",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39271,
+          longitude: 36.41944,
+          z: 500,
+          color: "RED",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39271,
+          longitude: 36.41944,
+          z: 200,
+          color: "SKYBLUE",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39271,
+          longitude: 36.41944,
+          z: 500,
+          color: "RED",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39161,
+          longitude: 36.41944,
+          z: 200,
+          color: "SKYBLUE",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39161,
+          longitude: 36.41944,
+          z: 500,
+          color: "RED",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39161,
+          longitude: 36.41844,
+          z: 200,
+          color: "SKYBLUE",
+        },
+        {
+          x: 100,
+          y: 100,
+          h: 300,
+          latitude: 127.39161,
+          longitude: 36.41844,
           z: 500,
           color: "RED",
         },
@@ -114,6 +235,7 @@
         )
       );
 
+      // 얇은 원형 만들기
       const entities = viewer.entities;
       let height;
       let positions;
@@ -136,6 +258,8 @@
         });
       }
 
+      // 원하는 위치에 text 넣기
+      // 위도(latitude), 경도(longitude), 높이(height), 글자(text)
       function kkk(latitude, longitude, height, text) {
         viewer.entities.add({
           position: Cesium.Cartesian3.fromDegrees(latitude, longitude, height),
@@ -217,12 +341,8 @@
         kkk(item.latitude, item.longitude, item.height, item.text)
       );
 
-      // Add Cesium OSM Buildings.
-      const buildingsTileset = viewer.scene.primitives.add(
-        Cesium.createOsmBuildings()
-      );
-
-      // Fly the camera to Denver, Colorado at the given longitude, latitude, and height.
+      // 브라우저 시작시 시작할 위치와 높이
+      // 위도, 경도, 높이
       viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(
           127.3949102176,
@@ -252,12 +372,11 @@
       addBuildingGeoJSON();
 
       // STEP 4 CODE
-      // Hide individual buildings in this area using 3D Tiles Styling language.
+      // 3D 타일 스타일링 언어를 사용하여 이 영역에서 개별 건물을 숨김
       buildingsTileset.style = new Cesium.Cesium3DTileStyle({
-        // Create a style rule to control each building's "show" property.
         show: {
           conditions: [
-            // Any building that has this elementId will have `show = false`.
+            // 원래 있었던 3D 건물 지우기 (해당 건물 클릭시 나타나는 id 값을 넣으면 됨.)
             ["${elementId} === 532245203", false],
             ["${elementId} === 332469316", false],
             ["${elementId} === 332469317", false],

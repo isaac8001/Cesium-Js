@@ -1,0 +1,74 @@
+[
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.39491,
+    "longitude": 36.41944,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.39381,
+    "longitude": 36.41944,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.39271,
+    "longitude": 36.41944,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.39161,
+    "longitude": 36.41944,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.39051,
+    "longitude": 36.41944,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.38941,
+    "longitude": 36.41844,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.38831,
+    "longitude": 36.41844,
+    "z": 200,
+    "color": "SKYBLUE"
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "h": 300,
+    "latitude": 127.38721,
+    "longitude": 36.41844,
+    "z": 200,
+    "color": "SKYBLUE"
+  }
+]

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Include the CesiumJS JavaScript and CSS files -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.79.1/Build/Cesium/Cesium.js"></script>
+    <link
+      href="https://cesium.com/downloads/cesiumjs/releases/1.79.1/Build/Cesium/Widgets/widgets.css"
+      rel="stylesheet"
+    />
+    <style type="text/css">
+      #toggle-building {
+        z-index: 1;
+        position: fixed;
+        top: 5px;
+        left: 5px;
+      }
+    </style>
+  </head>
+</html>
+<body>
+  <div id="cesiumContainer" class="fullSize"></div>
+  <button id="toggle-building">Toggle new building</button>
+  <div id="label"></div>
+
+  <script>
+    // API KEY(Token) 입력
+    Cesium.Ion.defaultAccessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNTdkNTc5YS1lODU4LTQxODMtYmIyNi0yYjhiMDM0M2NlNzAiLCJpZCI6MTIxMjYxLCJpYXQiOjE2NzM1OTExMjN9.nqcLnv-QlPS6gBGfpvyQuOh3Ftj8O1FHwjZTT-jB30M";
+
+    // STEP 2 CODE
+    // Cesium World Terrain 뷰어 초기화
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      terrainProvider: Cesium.createWorldTerrain(),
+      shadows: true,
+      infoBox: true,
+    });
+
+    // 세슘에서 제공하는 기본적인 3d 건물 추가
+    const buildingsTileset = viewer.scene.primitives.add(
+      Cesium.createOsmBuildings()
+    );
+
+    // 박스 만들기 함수
+    function addBox(x, y, h, latitude, longitude, z, color) {
+      const scene = viewer.scene;
+      let cc, ap;
+      scene.globe.depthTestAgainstTerrain = true;
+      // 컬러 설정
+      switch (color) {
+        case "SKYBLUE":
+          cc = Cesium.Color.SKYBLUE;
+          ap = 0.5;
+          break;
+        case "BLUE":
+          cc = Cesium.Color.BLUE;
+          ap = 0.5;
+          break;
+        case "RED":
+          cc = Cesium.Color.RED;
+          ap = 0.4;
+          break;
+        case "YELLOW":
+          cc = Cesium.Color.YELLOW;
+          ap = 0.5;
+          break;
+        case "GRAY":
+          cc = Cesium.Color.GRAY;
+          ap = 0.7;
+          break;
+        case "GREEN":
+          cc = Cesium.Color.GREEN;
+          ap = 0.7;
+          break;
+        case "PINK":
+          cc = Cesium.Color.PINK;
+          ap = 0.7;
+          break;
+        case "ORANGE":
+          cc = Cesium.Color.ORANGE;
+          ap = 0.7;
+          break;
+        case "BLACK":
+          cc = Cesium.Color.BLACK;
+          ap = 0.7;
+          break;
+      }
+
+      // 도형의 가로(x), 세로(y), 높이(h), ~ 높이부터 시작할지(z), cc(컬러), ap(투명도)
+      scene.primitives.add(
+        new Cesium.Primitive({
+          geometryInstances: new Cesium.GeometryInstance({
+            geometry: Cesium.BoxGeometry.fromDimensions({
+              vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
+              dimensions: new Cesium.Cartesian3(x, y, h),
+            }),
+            modelMatrix: Cesium.Matrix4.multiplyByTranslation(
+              Cesium.Transforms.eastNorthUpToFixedFrame(
+                Cesium.Cartesian3.fromDegrees(latitude, longitude)
+              ),
+              new Cesium.Cartesian3(0.0, 0.0, z),
+              new Cesium.Matrix4()
+            ),
+            attributes: {
+              color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+                cc.withAlpha(ap)
+              ),
+            },
+          }),
+          appearance: new Cesium.PerInstanceColorAppearance({
+            closed: true,
+          }),
+        })
+      );
+    }
+    // 박스 데이터 정보
+    const makebox = [
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39491,
+        longitude: 36.41944,
+        z: 200,
+        color: "SKYBLUE",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39491,
+        longitude: 36.41944,
+        z: 500,
+        color: "RED",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39381,
+        longitude: 36.41944,
+        z: 200,
+        color: "SKYBLUE",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39381,
+        longitude: 36.41944,
+        z: 500,
+        color: "RED",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39271,
+        longitude: 36.41944,
+        z: 200,
+        color: "SKYBLUE",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39271,
+        longitude: 36.41944,
+        z: 500,
+        color: "RED",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39271,
+        longitude: 36.41944,
+        z: 200,
+        color: "SKYBLUE",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39271,
+        longitude: 36.41944,
+        z: 500,
+        color: "RED",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39161,
+        longitude: 36.41944,
+        z: 200,
+        color: "SKYBLUE",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39161,
+        longitude: 36.41944,
+        z: 500,
+        color: "RED",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39161,
+        longitude: 36.41844,
+        z: 200,
+        color: "SKYBLUE",
+      },
+      {
+        x: 100,
+        y: 100,
+        h: 300,
+        latitude: 127.39161,
+        longitude: 36.41844,
+        z: 500,
+        color: "RED",
+      },
+    ];
+    // makebox 정보를 addBox 함수로 던지기
+    makebox.map((item) =>
+      addBox(
+        item.x,
+        item.y,
+        item.h,
+        item.latitude,
+        item.longitude,
+        item.z,
+        item.color
+      )
+    );
+
+    // 브라우저 시작시 시작할 위치와 높이
+    // 위도, 경도, 높이
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(
+        127.3949102176,
+        36.4194472355,
+        3000
+      ),
+    });
+
+    // STEP 3 CODE
+    async function addBuildingGeoJSON() {
+      // Load the GeoJSON file from Cesium ion.
+      const geoJSONURL = await Cesium.IonResource.fromAssetId(1500811);
+      // Create the geometry from the GeoJSON, and clamp it to the ground.
+      const geoJSON = await Cesium.GeoJsonDataSource.load(geoJSONURL, {
+        clampToGround: true,
+      });
+      // Add it to the scene.
+      const dataSource = await viewer.dataSources.add(geoJSON);
+      // By default, polygons in CesiumJS will be draped over all 3D content in the scene.
+      // Modify the polygons so that this draping only applies to the terrain, not 3D buildings.
+      for (const entity of dataSource.entities.values) {
+        entity.polygon.classificationType = Cesium.ClassificationType.TERRAIN;
+      }
+      // Move the camera so that the polygon is in view.
+      //viewer.flyTo(dataSource);
+    }
+    addBuildingGeoJSON();
+
+    // STEP 4 CODE
+    // Hide individual buildings in this area using 3D Tiles Styling language.
+    buildingsTileset.style = new Cesium.Cesium3DTileStyle({
+      // Create a style rule to control each building's "show" property.
+      show: {
+        conditions: [
+          // Any building that has this elementId will have `show = false`.
+          ["${elementId} === 532245203", false],
+          ["${elementId} === 332469316", false],
+          ["${elementId} === 332469317", false],
+          ["${elementId} === 235368665", false],
+          ["${elementId} === 530288180", false],
+          ["${elementId} === 530288179", false],
+          // If a building does not have one of these elementIds, set `show = true`.
+          [true, true],
+        ],
+      },
+      // Set the default color style for this particular 3D Tileset.
+      // For any building that has a `cesium#color` property, use that color, otherwise make it white.
+      color:
+        "Boolean(${feature['cesium#color']}) ? color(${feature['cesium#color']}) : color('#ffffff')",
+    });
+
+    // STEP 6 CODE
+    // Add the 3D Tileset you created from your Cesium ion account.
+    const newBuildingTileset = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1500834),
+      })
+    );
+    const newBanzGLS580 = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1503809),
+      })
+    );
+    const newAventador = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1504034),
+      })
+    );
+    const newWoodeTower = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1504217),
+      })
+    );
+    const newBuilding_1 = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1504216),
+      })
+    );
+    const newCruiser = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1504214),
+      })
+    );
+    const newApartment = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1504057),
+      })
+    );
+
+    // 원하는 위치에 text 넣기
+    // 위도(latitude), 경도(longitude), 높이(height), 글자(text)
+    function addText(latitude, longitude, height, text) {
+      viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(latitude, longitude, height),
+        label: {
+          font: "18px Helvetica",
+          text: text,
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 2,
+          fillColor: Cesium.Color.RED,
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+        },
+      });
+    }
+
+    // map으로 함수에 접근하기.
+    const arr = [
+      {
+        latitude: 127.3949102176,
+        longitude: 36.4194472355,
+        height: 61.9415222354 + 60,
+        text: "높이 60m | 현재온도 16˚ | 풍속 20.7 m/s",
+      },
+      {
+        latitude: 127.3949102176,
+        longitude: 36.4194472355,
+        height: 61.9415222354 + 100,
+        text: "높이 100m | 현재온도 18˚ | 풍속 18.1 m/s",
+      },
+      {
+        latitude: 127.3949102176,
+        longitude: 36.4194472355,
+        height: 61.9415222354 + 140,
+        text: "높이 140m | 현재온도 20˚ | 풍속 16.8 m/s",
+      },
+      {
+        latitude: 127.3949102176,
+        longitude: 36.4194472355,
+        height: 61.9415222354 + 180,
+        text: "높이 160m | 현재온도 16˚ | 풍속 12.5 m/s",
+      },
+      {
+        latitude: 127.3949102176,
+        longitude: 36.4194472355,
+        height: 61.9415222354 + 220,
+        text: "높이 220m | 현재온도 15.5˚ | 풍속 12.7 m/s",
+      },
+      {
+        latitude: 127.396392,
+        longitude: 36.418592,
+        height: 61.9415222354 + 40,
+        text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+      },
+      {
+        latitude: 127.392942,
+        longitude: 36.41992,
+        height: 61.9415222354 + 40,
+        text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+      },
+      {
+        latitude: 127.398025,
+        longitude: 36.421666,
+        height: 61.9415222354 + 40,
+        text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+      },
+      {
+        latitude: 127.395738,
+        longitude: 36.422693,
+        height: 61.9415222354 + 40,
+        text: "높이 40m | 현재온도 20.5˚ | 풍속 3.7 m/s",
+      },
+      {
+        latitude: 127.402665,
+        longitude: 36.424814,
+        height: 61.9415222354 + 10,
+        text: "컨트롤에프 주식회사",
+      },
+    ];
+    arr.map((item) =>
+      addText(item.latitude, item.longitude, item.height, item.text)
+    );
+
+    // 버튼 클릭으로 새로운 건축물 show or none
+    document.querySelector("#toggle-building").onclick = function () {
+      newBuildingTileset.show = !newBuildingTileset.show;
+      newBanzGLS580.show = !newBanzGLS580.show;
+      newAventador.show = !newAventador.show;
+    };
+
+    const imageryLayers = viewer.imageryLayers;
+    const viewModel = {
+      layers: [],
+      baseLayers: [],
+      upLayer: null,
+      downLayer: null,
+      selectedLayer: null,
+      isSelectableLayer: function (layer) {
+        return this.baseLayers.indexOf(layer) >= 0;
+      },
+      raise: function (layer, index) {
+        imageryLayers.raise(layer);
+        viewModel.upLayer = layer;
+        viewModel.downLayer = viewModel.layers[Math.max(0, index - 1)];
+        updateLayerList();
+        window.setTimeout(function () {
+          viewModel.upLayer = viewModel.downLayer = null;
+        }, 10);
+      },
+      lower: function (layer, index) {
+        imageryLayers.lower(layer);
+        viewModel.upLayer =
+          viewModel.layers[Math.min(viewModel.layers.length - 1, index + 1)];
+        viewModel.downLayer = layer;
+        updateLayerList();
+        window.setTimeout(function () {
+          viewModel.upLayer = viewModel.downLayer = null;
+        }, 10);
+      },
+      canRaise: function (layerIndex) {
+        return layerIndex > 0;
+      },
+      canLower: function (layerIndex) {
+        return layerIndex >= 0 && layerIndex < imageryLayers.length - 1;
+      },
+    };
+    const baseLayers = viewModel.baseLayers;
+
+    Cesium.knockout.track(viewModel);
+    // 레이어 위에 grid 생성
+    function setupLayers() {
+      addBaseLayerOption("Bing Maps Aerial", undefined); // the current base layer
+
+      addAdditionalLayerOption(
+        "Grid",
+        new Cesium.GridImageryProvider(),
+        0.4,
+        true
+      );
+      addAdditionalLayerOption(
+        "Tile Coordinates",
+        new Cesium.TileCoordinatesImageryProvider(),
+        1.0,
+        false
+      );
+    }
+
+    function addBaseLayerOption(name, imageryProvider) {
+      let layer;
+      if (typeof imageryProvider === "undefined") {
+        layer = imageryLayers.get(0);
+        viewModel.selectedLayer = layer;
+      } else {
+        layer = new Cesium.ImageryLayer(imageryProvider);
+      }
+
+      layer.name = name;
+      baseLayers.push(layer);
+    }
+
+    function addAdditionalLayerOption(name, imageryProvider, alpha, show) {
+      const layer = imageryLayers.addImageryProvider(imageryProvider);
+      layer.alpha = Cesium.defaultValue(alpha, 0.5);
+      layer.show = Cesium.defaultValue(show, true);
+      layer.name = name;
+      Cesium.knockout.track(layer, ["alpha", "show", "name"]);
+    }
+
+    function updateLayerList() {
+      const numLayers = imageryLayers.length;
+      viewModel.layers.splice(0, viewModel.layers.length);
+      for (let i = numLayers - 1; i >= 0; --i) {
+        viewModel.layers.push(imageryLayers.get(i));
+      }
+    }
+
+    setupLayers();
+    updateLayerList();
+  </script>
+</body>
