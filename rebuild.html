@@ -32,6 +32,21 @@
     Cesium.Ion.defaultAccessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNTdkNTc5YS1lODU4LTQxODMtYmIyNi0yYjhiMDM0M2NlNzAiLCJpZCI6MTIxMjYxLCJpYXQiOjE2NzM1OTExMjN9.nqcLnv-QlPS6gBGfpvyQuOh3Ftj8O1FHwjZTT-jB30M";
 
+    fetch("http://222.239.231.144:8080/isaac/box200m.json")
+      .then((response) => response.json())
+      .then((data) => {
+        data.map((item) =>
+          addBox(
+            item.x,
+            item.y,
+            item.h,
+            item.latitude,
+            item.longitude,
+            item.z,
+            item.color
+          )
+        );
+      });
     // STEP 2 CODE
     // Cesium World Terrain 뷰어 초기화
     const viewer = new Cesium.Viewer("cesiumContainer", {
@@ -120,13 +135,13 @@
     // 박스 데이터 정보
     const makebox = [
       {
-        x: 100,
-        y: 100,
+        x: 10000,
+        y: 10000,
         h: 300,
         latitude: 127.39491,
         longitude: 36.41944,
         z: 200,
-        color: "SKYBLUE",
+        color: "PINK",
       },
       {
         x: 100,
@@ -136,6 +151,15 @@
         longitude: 36.41944,
         z: 500,
         color: "RED",
+      },
+      {
+        x: 10000,
+        y: 10000,
+        h: 300,
+        latitude: 127.28341,
+        longitude: 36.41944,
+        z: 200,
+        color: "SKYBLUE",
       },
       {
         x: 100,
@@ -143,24 +167,15 @@
         h: 300,
         latitude: 127.39381,
         longitude: 36.41944,
-        z: 200,
-        color: "SKYBLUE",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39381,
-        longitude: 36.41944,
         z: 500,
         color: "RED",
       },
       {
-        x: 100,
-        y: 100,
+        x: 10000,
+        y: 10000,
         h: 300,
-        latitude: 127.39271,
-        longitude: 36.41944,
+        latitude: 127.39491,
+        longitude: 36.32944,
         z: 200,
         color: "SKYBLUE",
       },
@@ -214,7 +229,7 @@
         y: 100,
         h: 300,
         latitude: 127.39161,
-        longitude: 36.41844,
+        longitude: 36.41854,
         z: 200,
         color: "SKYBLUE",
       },
@@ -223,7 +238,7 @@
         y: 100,
         h: 300,
         latitude: 127.39161,
-        longitude: 36.41844,
+        longitude: 36.41854,
         z: 500,
         color: "RED",
       },
