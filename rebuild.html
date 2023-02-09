@@ -13,18 +13,30 @@
         margin: 0;
         padding: 0;
       }
-      #toggle-building {
+      #buttonbox {
         z-index: 1;
         position: fixed;
         top: 5px;
-        left: 5px;
+      }
+      #toggle-building {
+        margin-left: 3px;
+      }
+      #makebox {
+        margin-left: 3px;
+      }
+      #deletebox {
+        margin-left: 3px;
       }
     </style>
   </head>
 </html>
 <body>
   <div id="cesiumContainer" class="fullSize"></div>
-  <button id="toggle-building">Toggle new building</button>
+  <div id="buttonbox">
+    <button id="toggle-building">Toggle new building</button>
+    <button id="makebox">Make box</button>
+    <button id="deletebox">Delete box</button>
+  </div>
   <div id="label"></div>
 
   <script>
@@ -32,21 +44,22 @@
     Cesium.Ion.defaultAccessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNTdkNTc5YS1lODU4LTQxODMtYmIyNi0yYjhiMDM0M2NlNzAiLCJpZCI6MTIxMjYxLCJpYXQiOjE2NzM1OTExMjN9.nqcLnv-QlPS6gBGfpvyQuOh3Ftj8O1FHwjZTT-jB30M";
 
-    fetch("http://222.239.231.144:8080/isaac/box200m.json")
-      .then((response) => response.json())
-      .then((data) => {
-        data.map((item) =>
-          addBox(
-            item.x,
-            item.y,
-            item.h,
-            item.latitude,
-            item.longitude,
-            item.z,
-            item.color
-          )
-        );
-      });
+    // json 파일 불러와서 뿌리기
+    //fetch("http://222.239.231.144:8080/isaac/box200m.json")
+    //  .then((response) => response.json())
+    //  .then((data) => {
+    //    data.map((item) =>
+    //      addBox(
+    //        item.x,
+    //        item.y,
+    //        item.h,
+    //        item.latitude,
+    //        item.longitude,
+    //        item.z,
+    //        item.color
+    //      )
+    //    );
+    //  });
     // STEP 2 CODE
     // Cesium World Terrain 뷰어 초기화
     const viewer = new Cesium.Viewer("cesiumContainer", {
@@ -69,39 +82,39 @@
       switch (color) {
         case "SKYBLUE":
           cc = Cesium.Color.SKYBLUE;
-          ap = 0.5;
+          ap = 0.8;
           break;
         case "BLUE":
           cc = Cesium.Color.BLUE;
-          ap = 0.5;
+          ap = 0.8;
           break;
         case "RED":
           cc = Cesium.Color.RED;
-          ap = 0.4;
+          ap = 0.8;
           break;
         case "YELLOW":
           cc = Cesium.Color.YELLOW;
-          ap = 0.5;
+          ap = 0.8;
           break;
         case "GRAY":
           cc = Cesium.Color.GRAY;
-          ap = 0.7;
+          ap = 0.8;
           break;
         case "GREEN":
           cc = Cesium.Color.GREEN;
-          ap = 0.7;
+          ap = 0.8;
           break;
         case "PINK":
           cc = Cesium.Color.PINK;
-          ap = 0.7;
+          ap = 0.8;
           break;
         case "ORANGE":
           cc = Cesium.Color.ORANGE;
-          ap = 0.7;
+          ap = 0.8;
           break;
         case "BLACK":
           cc = Cesium.Color.BLACK;
-          ap = 0.7;
+          ap = 0.8;
           break;
       }
 
@@ -133,127 +146,195 @@
       );
     }
     // 박스 데이터 정보
-    const makebox = [
-      {
-        x: 10000,
-        y: 10000,
-        h: 300,
-        latitude: 127.39491,
-        longitude: 36.41944,
-        z: 200,
-        color: "PINK",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39491,
-        longitude: 36.41944,
-        z: 500,
-        color: "RED",
-      },
-      {
-        x: 10000,
-        y: 10000,
-        h: 300,
-        latitude: 127.28341,
-        longitude: 36.41944,
-        z: 200,
-        color: "SKYBLUE",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39381,
-        longitude: 36.41944,
-        z: 500,
-        color: "RED",
-      },
-      {
-        x: 10000,
-        y: 10000,
-        h: 300,
-        latitude: 127.39491,
-        longitude: 36.32944,
-        z: 200,
-        color: "SKYBLUE",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39271,
-        longitude: 36.41944,
-        z: 500,
-        color: "RED",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39271,
-        longitude: 36.41944,
-        z: 200,
-        color: "SKYBLUE",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39271,
-        longitude: 36.41944,
-        z: 500,
-        color: "RED",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39161,
-        longitude: 36.41944,
-        z: 200,
-        color: "SKYBLUE",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39161,
-        longitude: 36.41944,
-        z: 500,
-        color: "RED",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39161,
-        longitude: 36.41854,
-        z: 200,
-        color: "SKYBLUE",
-      },
-      {
-        x: 100,
-        y: 100,
-        h: 300,
-        latitude: 127.39161,
-        longitude: 36.41854,
-        z: 500,
-        color: "RED",
-      },
-    ];
+    //const makebox = [
+    //  {
+    //    x: 10000,
+    //    y: 10000,
+    //    h: 300,
+    //    latitude: 127.39491,
+    //    longitude: 36.41944,
+    //    z: 200,
+    //    color: "PINK",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39491,
+    //    longitude: 36.41944,
+    //    z: 500,
+    //    color: "RED",
+    //  },
+    //  {
+    //    x: 10000,
+    //    y: 10000,
+    //    h: 300,
+    //    latitude: 127.28341,
+    //    longitude: 36.41944,
+    //    z: 200,
+    //    color: "SKYBLUE",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39381,
+    //    longitude: 36.41944,
+    //    z: 500,
+    //    color: "RED",
+    //  },
+    //  {
+    //    x: 10000,
+    //    y: 10000,
+    //    h: 300,
+    //    latitude: 127.39491,
+    //    longitude: 36.32944,
+    //    z: 200,
+    //    color: "SKYBLUE",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39271,
+    //    longitude: 36.41944,
+    //    z: 500,
+    //    color: "RED",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39271,
+    //    longitude: 36.41944,
+    //    z: 200,
+    //    color: "SKYBLUE",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39271,
+    //    longitude: 36.41944,
+    //    z: 500,
+    //    color: "RED",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39161,
+    //    longitude: 36.41944,
+    //    z: 200,
+    //    color: "SKYBLUE",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39161,
+    //    longitude: 36.41944,
+    //    z: 500,
+    //    color: "RED",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39161,
+    //    longitude: 36.41854,
+    //    z: 200,
+    //    color: "SKYBLUE",
+    //  },
+    //  {
+    //    x: 100,
+    //    y: 100,
+    //    h: 300,
+    //    latitude: 127.39161,
+    //    longitude: 36.41854,
+    //    z: 500,
+    //    color: "RED",
+    //  },
+    //];
     // makebox 정보를 addBox 함수로 던지기
-    makebox.map((item) =>
-      addBox(
-        item.x,
-        item.y,
-        item.h,
-        item.latitude,
-        item.longitude,
-        item.z,
-        item.color
-      )
+    //makebox.map((item) =>
+    //  addBox(
+    //    item.x,
+    //    item.y,
+    //    item.h,
+    //    item.latitude,
+    //    item.longitude,
+    //    item.z,
+    //    item.color
+    //  )
+    //);
+
+    // 박스 만들기 함수
+    // 박스 갯수, 가로, 세로, 높이, 위도, 경도, 땅에서 부터 몇 미터에서 시작할지, 박스 색상 3개
+    // 박스의 크기에 따라서 간격이 넓어지고 줄어야 함.
+    // 가로 박스 크기에 따라서 if문으로 우선 간격 조절 하기
+    // z = 땅에서 시작하는 위치
+    function makeBox(
+      boxNum,
+      x,
+      y,
+      h,
+      latitude,
+      longitude,
+      z,
+      color1,
+      color2,
+      color3
+    ) {
+      let zin = Number(z);
+      let boxheight = Number(h);
+      let color = [color1, color2, color3];
+      let startHeight = [zin, zin + boxheight, zin + boxheight + boxheight];
+      box_data = [];
+      for (let i = 0; i < color.length; i++) {
+        for (let s = 0; s < Number(boxNum); s++) {
+          for (let c = 0; c < Number(boxNum); c++) {
+            box = {};
+            box["x"] = Number(x);
+            box["y"] = Number(y);
+            box["h"] = Number(h);
+            box["latitude"] = parseFloat(
+              parseFloat(127.39491) - (0.01291 * s).toFixed(5)
+            );
+            box["longitude"] = parseFloat(
+              parseFloat(36.41944) - (0.01191 * c).toFixed(5)
+            );
+            box["z"] = startHeight[i];
+            box["color"] = color[i].toUpperCase();
+            box_data.push(box);
+          }
+        }
+      }
+      console.log(box_data);
+      box_data.map((item) =>
+        addBox(
+          item.x,
+          item.y,
+          item.h,
+          item.latitude,
+          item.longitude,
+          item.z,
+          item.color
+        )
+      );
+    }
+    // 박스 갯수, 가로, 세로, 높이,
+    makeBox(
+      "10",
+      "1000",
+      "1000",
+      "600",
+      "127.39491",
+      "36.41944",
+      "10",
+      "black",
+      "yellow",
+      "blue"
     );
 
     // 브라우저 시작시 시작할 위치와 높이
