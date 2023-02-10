@@ -34,8 +34,16 @@
   <div id="cesiumContainer" class="fullSize"></div>
   <div id="buttonbox">
     <button id="toggle-building">Toggle new building</button>
-    <button id="makebox">Make box</button>
-    <button id="deletebox">Delete box</button>
+    <!-- boxNum, x, y, h, latitude, longitude, z, color1, color2, color3 -->
+    <button
+      id="makebox"
+      onclick="makeBox(prompt('박스의 갯수를 입력하세요 (최대 100개 이하로 입력하세요)'),prompt('박스의 가로 길이(m)를 입력하세요'),prompt('박스의 세로 길이(m)를 입력하세요'),prompt('박스의 높이(m)를 입력하세요'),prompt('위도를 입력하세요'), prompt('경도를 입력하세요'),prompt('땅에서 몇 m의 높이부터 박스를 그릴지 입력하세요'), prompt('첫번째 박스 컬러를 입력하세요(영문)'),prompt('두번째 박스 컬러를 입력하세요(영문)'),prompt('세번째 박스 컬러를 입력하세요(영문)'))"
+    >
+      Make box
+    </button>
+    <button id="deletebox" onclick="makeBox(0,0,0,0,0,0,0,0,0)">
+      Delete box
+    </button>
   </div>
   <div id="label"></div>
 
@@ -324,18 +332,18 @@
       );
     }
     // 박스 갯수, 가로, 세로, 높이,
-    makeBox(
-      "10",
-      "1000",
-      "1000",
-      "600",
-      "127.39491",
-      "36.41944",
-      "10",
-      "black",
-      "yellow",
-      "blue"
-    );
+    //makeBox(
+    //  "10",
+    //  "1000",
+    //  "1000",
+    //  "600",
+    //  "127.39491",
+    //  "36.41944",
+    //  "10",
+    //  "black",
+    //  "yellow",
+    //  "blue"
+    //);
 
     // 브라우저 시작시 시작할 위치와 높이
     // 위도, 경도, 높이
@@ -560,19 +568,18 @@
     // 레이어 위에 grid 생성
     function setupLayers() {
       addBaseLayerOption("Bing Maps Aerial", undefined); // the current base layer
-
       addAdditionalLayerOption(
         "Grid",
         new Cesium.GridImageryProvider(),
         0.4,
         true
       );
-      addAdditionalLayerOption(
-        "Tile Coordinates",
-        new Cesium.TileCoordinatesImageryProvider(),
-        1.0,
-        false
-      );
+      //addAdditionalLayerOption(
+      //  "Tile Coordinates",
+      //  new Cesium.TileCoordinatesImageryProvider(),
+      //  1.0,
+      //  false
+      //);
     }
 
     function addBaseLayerOption(name, imageryProvider) {
