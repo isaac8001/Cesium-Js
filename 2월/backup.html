@@ -37,12 +37,9 @@
     <!-- boxNum, x, y, h, latitude, longitude, z, color1, color2, color3 -->
     <button
       id="makebox"
-      onclick="makeBox(prompt('박스의 갯수를 입력하세요 (최대 100개 이하로 입력하세요)'),prompt('박스의 가로 길이(m)를 입력하세요'),prompt('박스의 세로 길이(m)를 입력하세요'),prompt('박스의 높이(m)를 입력하세요'),prompt('위도를 입력하세요'), prompt('경도를 입력하세요'),prompt('땅에서 몇 m의 높이부터 박스를 그릴지 입력하세요'), prompt('첫번째 박스 컬러를 입력하세요(영문)'),prompt('두번째 박스 컬러를 입력하세요(영문)'),prompt('세번째 박스 컬러를 입력하세요(영문)'))"
+      onclick="makeBox(prompt('박스의 갯수를 입력하세요 (최대 100개 이하로 입력하세요)'),prompt('박스의 가로 길이(m)를 입력하세요'),prompt('박스의 세로 길이(m)를 입력하세요'),prompt('박스의 높이(m)를 입력하세요'),127.39491, 36.41944,prompt('땅에서 몇 m의 높이부터 박스를 그릴지 입력하세요'), 'skyblue','yellow','red')"
     >
       Make box
-    </button>
-    <button id="deletebox" onclick="makeBox(0,0,0,0,0,0,0,0,0)">
-      Delete box
     </button>
   </div>
   <div id="label"></div>
@@ -51,6 +48,21 @@
     // API KEY(Token) 입력
     Cesium.Ion.defaultAccessToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNTdkNTc5YS1lODU4LTQxODMtYmIyNi0yYjhiMDM0M2NlNzAiLCJpZCI6MTIxMjYxLCJpYXQiOjE2NzM1OTExMjN9.nqcLnv-QlPS6gBGfpvyQuOh3Ftj8O1FHwjZTT-jB30M";
+
+    // STEP 2 CODE
+    // Cesium World Terrain 뷰어 초기화
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      terrainProvider: Cesium.createWorldTerrain(),
+      shadows: true,
+      infoBox: true,
+    });
+    // 최대로 스크롤 할 수 있는 높이 설정
+
+    // viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
+    // 세슘에서 제공하는 기본적인 3d 건물 추가
+    const buildingsTileset = viewer.scene.primitives.add(
+      Cesium.createOsmBuildings()
+    );
 
     // json 파일 불러와서 뿌리기
     //fetch("http://222.239.231.144:8080/isaac/box200m.json")
@@ -68,18 +80,6 @@
     //      )
     //    );
     //  });
-    // STEP 2 CODE
-    // Cesium World Terrain 뷰어 초기화
-    const viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: Cesium.createWorldTerrain(),
-      shadows: true,
-      infoBox: true,
-    });
-
-    // 세슘에서 제공하는 기본적인 3d 건물 추가
-    const buildingsTileset = viewer.scene.primitives.add(
-      Cesium.createOsmBuildings()
-    );
 
     // 박스 만들기 함수
     function addBox(x, y, h, latitude, longitude, z, color) {
@@ -90,39 +90,39 @@
       switch (color) {
         case "SKYBLUE":
           cc = Cesium.Color.SKYBLUE;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "BLUE":
           cc = Cesium.Color.BLUE;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "RED":
           cc = Cesium.Color.RED;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "YELLOW":
           cc = Cesium.Color.YELLOW;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "GRAY":
           cc = Cesium.Color.GRAY;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "GREEN":
           cc = Cesium.Color.GREEN;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "PINK":
           cc = Cesium.Color.PINK;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "ORANGE":
           cc = Cesium.Color.ORANGE;
-          ap = 0.8;
+          ap = 0.9;
           break;
         case "BLACK":
           cc = Cesium.Color.BLACK;
-          ap = 0.8;
+          ap = 0.9;
           break;
       }
 
@@ -172,97 +172,7 @@
     //    longitude: 36.41944,
     //    z: 500,
     //    color: "RED",
-    //  },
-    //  {
-    //    x: 10000,
-    //    y: 10000,
-    //    h: 300,
-    //    latitude: 127.28341,
-    //    longitude: 36.41944,
-    //    z: 200,
-    //    color: "SKYBLUE",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39381,
-    //    longitude: 36.41944,
-    //    z: 500,
-    //    color: "RED",
-    //  },
-    //  {
-    //    x: 10000,
-    //    y: 10000,
-    //    h: 300,
-    //    latitude: 127.39491,
-    //    longitude: 36.32944,
-    //    z: 200,
-    //    color: "SKYBLUE",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39271,
-    //    longitude: 36.41944,
-    //    z: 500,
-    //    color: "RED",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39271,
-    //    longitude: 36.41944,
-    //    z: 200,
-    //    color: "SKYBLUE",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39271,
-    //    longitude: 36.41944,
-    //    z: 500,
-    //    color: "RED",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39161,
-    //    longitude: 36.41944,
-    //    z: 200,
-    //    color: "SKYBLUE",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39161,
-    //    longitude: 36.41944,
-    //    z: 500,
-    //    color: "RED",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39161,
-    //    longitude: 36.41854,
-    //    z: 200,
-    //    color: "SKYBLUE",
-    //  },
-    //  {
-    //    x: 100,
-    //    y: 100,
-    //    h: 300,
-    //    latitude: 127.39161,
-    //    longitude: 36.41854,
-    //    z: 500,
-    //    color: "RED",
-    //  },
+    //  }
     //];
     // makebox 정보를 addBox 함수로 던지기
     //makebox.map((item) =>
@@ -318,7 +228,6 @@
           }
         }
       }
-      console.log(box_data);
       box_data.map((item) =>
         addBox(
           item.x,
@@ -331,6 +240,7 @@
         )
       );
     }
+
     // 박스 갯수, 가로, 세로, 높이,
     //makeBox(
     //  "10",
@@ -574,12 +484,6 @@
         0.4,
         true
       );
-      //addAdditionalLayerOption(
-      //  "Tile Coordinates",
-      //  new Cesium.TileCoordinatesImageryProvider(),
-      //  1.0,
-      //  false
-      //);
     }
 
     function addBaseLayerOption(name, imageryProvider) {
@@ -610,6 +514,16 @@
         viewModel.layers.push(imageryLayers.get(i));
       }
     }
+    //(async () => {
+    //  try {
+    //    const resource = await Cesium.IonResource.fromAssetId(1548099);
+    //    const dataSource = await Cesium.GeoJsonDataSource.load(resource);
+    //    await viewer.dataSources.add(dataSource);
+    //    await viewer.zoomTo(dataSource);
+    //  } catch (error) {
+    //    console.log(error);
+    //  }
+    //})();
 
     setupLayers();
     updateLayerList();
