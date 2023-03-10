@@ -285,3 +285,51 @@ function loadModel() {
     console.log("건물 생성 완료");
   };
 }
+
+// 2023.03.09 주석처리된 코드
+// STEP 2 CODE
+// Cesium World Terrain 뷰어 초기화 1.79버전
+// const viewer = new Cesium.Viewer("cesiumContainer", {
+//   terrainProvider: Cesium.createWorldTerrain(),
+//   shadows: true,
+//   infoBox: true,
+//   animation: true,
+//   timeline: true,
+//   sceneMode: Cesium.SceneMode.SCENE3D,
+//   navigationHelpButton: true,
+// });
+
+// 서버에있는 이미지로 화살표 표출 방법
+// 위도, 경도, 높이, 각도
+// function wind100(latitude, longitude, degree) {
+//   viewer.entities.add({
+//     position: Cesium.Cartesian3.fromDegrees(latitude, longitude, 100),
+//     billboard: {
+//       image: "./images/red.png",
+//       width: 30,
+//       height: 30,
+//       alignedAxis: Cesium.Cartesian3.fromArray([0, 1, 0]), // keep the billboard pointing in the y-direction
+//       eyeOffset: Cesium.Cartesian3.ZERO,
+//       rotation: Cesium.Math.toDegrees(degree), // Adjust the angle of the picture here
+//     },
+//   });
+// }
+// const arrow100 = [
+//   {
+//     latitude: 127.39491,
+//     longitude: 36.41944,
+//     degree: 10,
+//   },
+//   {
+//     latitude: 127.39491,
+//     longitude: 36.41924,
+//     degree: 10,
+//   },
+//   {
+//     latitude: 127.39491,
+//     longitude: 36.41904,
+//     degree: 10,
+//   },
+// ];
+
+// arrow100.map((item) => wind100(item.latitude, item.longitude, item.degree));
